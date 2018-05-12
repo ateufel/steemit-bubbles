@@ -1,0 +1,19 @@
+{
+  "name": "steemit-bubbles",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ateufel/steemit-bubbles.git",
+  "author": "Andreas Teufel <admin@devils-heaven.com>",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "webpack-dev-server"
+  },
+  "dependencies": {
+    "d3": "^5.4.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "webpack": "^4.8.2",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
