@@ -67,9 +67,6 @@ module.exports = env => {
 			]
 		},
 		plugins: [
-			new webpack.DefinePlugin({
-				'process.env.NODE_ENV': JSON.stringify('production')
-			}),
 			new HtmlWebpackPlugin({
 				inject: false,
 				template: 'htmlWebpackTemplate.ejs',
