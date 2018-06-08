@@ -1,30 +1,64 @@
 import * as d3 from 'd3';
+import {steemGetFollowers, steemGetFollowing} from './steemit';
 
-const canvas = d3.select('body')
-	.append('svg')
-	.attr('width', 640)
-	.attr('height', 480);
+const w = 600,
+	h = 600;
 
-//this will later be the followers or followings
-const testArray = [
-	{username: 'berndpfeiffer', SP: 250},
-	{username: 'limesoda', SP: 7100},
-	{username: 'nissla', SP: 520}
-];
+(async() => {
+	/*const followers = await steemGetFollowers('luschn');
+	const data = {
+		name: 'followers',
+		children: followers
+	};*/
 
-const nodes = d3.packSiblings(testArray.map(d => {
-	return ({
-		name: d.username,
-		r: d.SP * 0.02
-	});
-}));
+	//this will later be the followers or followings
+	const data = {
+		name: 'root',
+		children: [
+			{username: 'berndpfeiffer', SP: 250},
+			{username: 'limesoda', SP: 700},
+			{username: 'nissla', SP: 520},
+			{username: 'luschn', SP: 2000}
+		]
+	};
 
-canvas.selectAll('circle')
-	.data(nodes)
-	.enter()
-	.append('circle')
-	.attr('cx', (d) => d.x + 300)
-	.attr('cy', (d) => d.y + 300)
-	.attr('r', (d) => d.r)
-	.attr('fill', 'blue')
-	.attr('stroke', 'red');
+	//create svg element
+	d3.select('body')
+		.append('svg')
+		.attr('width', w)
+		.attr('height', h);
+
+	//create pack layout
+	const packLayout = d3.pack()
+		.padding(0)
+		.size([w, h]);
+	//turn data into hierarchical data for the pack layout
+	let nodes = d3.hierarchy(data);
+	//set the value/size for each node and sort the nodes
+	nodes.sum((d) => d.SP).sort((a, b) => b.value - a.value);
+	//create pack layout with those nodes
+	packLayout(nodes);
+
+	const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+	const svg = d3.select('svg')
+		.selectAll('g')
+		.data(nodes.descendants())
+		.enter()
+		.append('g');
+
+	svg
+		.append('circle')
+		.attr('cx', (d) => d.x)
+		.attr('cy', (d) => d.y)
+		.attr('r', (d) => d.r)
+		.attr('fill', (d, i) => color(i));
+
+	svg
+		.append('text')
+		.attr('dx', (d) => d.x)
+		.attr('dy', (d) => d.y)
+		.text((d) => {
+			return d.children === undefined ? `${d.data.username} (${d.data.SP})` : '';
+		});
+})();
