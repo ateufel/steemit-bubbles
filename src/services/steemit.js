@@ -1,6 +1,10 @@
 import {Client} from 'dsteem';
 const client = new Client('https://api.steemit.com');
 
+/**
+ * get an array with all the users an account follows
+ * @param account
+ */
 export const steemGetFollowing = async (account) => {
 	let following = [],
 		lastName = '';
@@ -17,7 +21,7 @@ export const steemGetFollowing = async (account) => {
 				following.push(...response);
 				lastName = response[response.length - 1].following;
 			} else {
-				return following.map(elem => `${elem.following}`);
+				return following.map(elem => elem.following);
 			}
 		}
 	} catch(err) {
@@ -26,6 +30,10 @@ export const steemGetFollowing = async (account) => {
 	}
 };
 
+/**
+ * get an array with all the users following an account
+ * @param account
+ */
 export const steemGetFollowers = async (account) => {
 	let followers = [],
 		lastName = '';
@@ -42,7 +50,7 @@ export const steemGetFollowers = async (account) => {
 				followers.push(...response);
 				lastName = response[response.length - 1].follower;
 			} else {
-				return followers.map(elem => `${elem.follower}`);
+				return followers.map(elem => elem.follower);
 			}
 		}
 	} catch(err) {
