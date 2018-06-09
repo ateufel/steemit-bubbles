@@ -3,7 +3,7 @@ const client = new Client('https://api.steemit.com');
 
 /**
  * get an array with all the users an account follows
- * @param account
+ * @param account name of a single account
  */
 export const steemGetFollowing = async (account) => {
 	let following = [],
@@ -32,7 +32,7 @@ export const steemGetFollowing = async (account) => {
 
 /**
  * get an array with all the users following an account
- * @param account
+ * @param account name of a single account
  */
 export const steemGetFollowers = async (account) => {
 	let followers = [],
@@ -59,7 +59,10 @@ export const steemGetFollowers = async (account) => {
 	}
 };
 
+/**
+ * get account data of steem account array
+ * @param accounts array of account names
+ */
 export const steemGetAccountData = async (accounts) => {
-	const response = await client.database.getAccounts(accounts);
-	return response;
+	return await client.database.getAccounts(accounts);
 };

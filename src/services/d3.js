@@ -7,6 +7,11 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 		.attr('width', width)
 		.attr('height', height);
 
+	//create tooltip for hover info
+	const tooltip = d3.select('body').append('div')
+		.attr('class', 'tooltip')
+		.style('opacity', 0);
+
 	//create pack layout
 	const packLayout = d3.pack()
 		.padding(0)
@@ -17,8 +22,6 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 	nodes.sum((d) => parseFloat(d[valueField])).sort((a, b) => b.value - a.value);
 	//create pack layout with those nodes
 	packLayout(nodes);
-
-	const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 	const svg = d3.select('svg')
 		.selectAll('g')
@@ -31,13 +34,39 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 		.attr('cx', (d) => d.x)
 		.attr('cy', (d) => d.y)
 		.attr('r', (d) => d.r)
-		.attr('fill', (d, i) => color(i));
+		.on('mouseover', (d) => {
+			tooltip.transition()
+				.duration(200)
+				.style('opacity', .9);
+			tooltip	.html(d.data.name + '<br/>'  + d.data[valueField])
+				.style('left', (d3.event.pageX) + 'px')
+				.style('top', (d3.event.pageY - 28) + 'px');
+		})
+		.on('mouseout', (d) => {
+			tooltip.transition()
+				.duration(500)
+				.style('opacity', 0);
+		});
 
 	svg
 		.append('text')
 		.attr('dx', (d) => d.x)
 		.attr('dy', (d) => d.y)
 		.text((d) => {
-			return d.children === undefined ? `${d.data.name} (${parseFloat(d.data[valueField])})` : '';
+			//return d.children === undefined ? `${d.data.name} (${parseFloat(d.data[valueField])})` : '';
+			return d.children === undefined ? d.data.name : '';
+		})
+		.on('mouseover', (d) => {
+			tooltip.transition()
+				.duration(200)
+				.style('opacity', .9);
+			tooltip	.html(d.data.name + '<br/>'  + d.data[valueField])
+				.style('left', (d3.event.pageX) + 'px')
+				.style('top', (d3.event.pageY - 28) + 'px');
+		})
+		.on('mouseout', (d) => {
+			tooltip.transition()
+				.duration(500)
+				.style('opacity', 0);
 		});
 };
