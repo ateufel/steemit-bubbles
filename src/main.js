@@ -1,18 +1,20 @@
 import * as d3 from 'd3';
-import {steemGetFollowers, steemGetFollowing} from './steemit';
+import {steemGetAccountData, steemGetFollowers, steemGetFollowing} from './steemit';
 
 const w = 600,
 	h = 600;
 
 (async() => {
-	/*const followers = await steemGetFollowers('luschn');
+	const followers = await steemGetFollowers('luschn');
+	const accountData = await steemGetAccountData(followers);
+	console.log(accountData);
 	const data = {
 		name: 'followers',
-		children: followers
-	};*/
+		children: accountData
+	};
 
 	//this will later be the followers or followings
-	const data = {
+	/*const data = {
 		name: 'root',
 		children: [
 			{username: 'berndpfeiffer', SP: 250},
@@ -20,7 +22,7 @@ const w = 600,
 			{username: 'nissla', SP: 520},
 			{username: 'luschn', SP: 2000}
 		]
-	};
+	};*/
 
 	//create svg element
 	d3.select('body')
@@ -35,7 +37,7 @@ const w = 600,
 	//turn data into hierarchical data for the pack layout
 	let nodes = d3.hierarchy(data);
 	//set the value/size for each node and sort the nodes
-	nodes.sum((d) => d.SP).sort((a, b) => b.value - a.value);
+	nodes.sum((d) => parseFloat(d['vesting_shares'])).sort((a, b) => b.value - a.value);
 	//create pack layout with those nodes
 	packLayout(nodes);
 
@@ -59,6 +61,6 @@ const w = 600,
 		.attr('dx', (d) => d.x)
 		.attr('dy', (d) => d.y)
 		.text((d) => {
-			return d.children === undefined ? `${d.data.username} (${d.data.SP})` : '';
+			return d.children === undefined ? `${d.data.name} (${parseFloat(d.data['vesting_shares'])})` : '';
 		});
 })();

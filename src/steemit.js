@@ -17,7 +17,7 @@ export const steemGetFollowing = async (account) => {
 				following.push(...response);
 				lastName = response[response.length - 1].following;
 			} else {
-				return following.map(elem => `@${elem.following}`);
+				return following.map(elem => `${elem.following}`);
 			}
 		}
 	} catch(err) {
@@ -33,7 +33,6 @@ export const steemGetFollowers = async (account) => {
 	try {
 		while (true) {
 			const response = await client.call('follow_api', 'get_followers', [account, lastName, 'blog', 100]);
-			console.log(response);
 			if (response && response.length && followers.length) {
 				if (response[0].follower === followers[followers.length - 1].follower) {
 					response.shift();
@@ -43,11 +42,16 @@ export const steemGetFollowers = async (account) => {
 				followers.push(...response);
 				lastName = response[response.length - 1].follower;
 			} else {
-				return followers.map(elem => `@${elem.follower}`);
+				return followers.map(elem => `${elem.follower}`);
 			}
 		}
 	} catch(err) {
 		console.log(err);
 		return [];
 	}
+};
+
+export const steemGetAccountData = async (accounts) => {
+	const response = await client.database.getAccounts(accounts);
+	return response;
 };
