@@ -1,24 +1,19 @@
 import * as d3 from 'd3';
 
 export const generatePackedCircle = (data, valueField, width, height) => {
+	//show tooltip with detail info
 	const showTooltip = (d) => {
 		tooltip
 			.transition()
-			.duration(200)
+			.duration(250)
 			.style('opacity', .9);
 		tooltip
 			.html(d.data.name + '<br/>'  + d.data[valueField])
 			.style('left', (d.x) + 'px')
-			.style('top', (d.y - 28) + 'px')
+			.style('top', (d.y - 30) + 'px')
 	};
 
-	const moveTooltip = (d) => {
-		/*tooltip
-			.html(d.data.name + '<br/>'  + d.data[valueField])
-			.style('left', (d3.event.pageX) + 'px')
-			.style('top', (d3.event.pageY - 28) + 'px');*/
-	};
-
+	//hide tooltip
 	const hideTooltip = (d) => {
 		tooltip
 			.transition()
@@ -48,30 +43,30 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 	//create pack layout with those nodes
 	packLayout(nodes);
 
+	//add data to d3 chart
 	const svg = d3.select('svg')
 		.selectAll('g')
 		.data(nodes.descendants())
 		.enter()
 		.append('g');
 
+	//turn data into circles
 	svg
 		.append('circle')
 		.attr('cx', (d) => d.x)
 		.attr('cy', (d) => d.y)
 		.attr('r', (d) => d.r)
 		.on('mouseover', showTooltip)
-		.on("mousemove", moveTooltip)
 		.on('mouseout', hideTooltip);
 
+	//add text label (username)
 	svg
 		.append('text')
 		.attr('dx', (d) => d.x)
 		.attr('dy', (d) => d.y)
 		.text((d) => {
-			//return d.children === undefined ? `${d.data.name} (${parseFloat(d.data[valueField])})` : '';
-			return d.children === undefined ? d.data.name : '';
+		return d.children === undefined ? d.data.name : '';
 		})
 		.on('mouseover', showTooltip)
-		.on("mousemove", moveTooltip)
 		.on('mouseout', hideTooltip);
 };
