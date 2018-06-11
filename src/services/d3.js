@@ -8,9 +8,9 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 			.duration(250)
 			.style('opacity', .9);
 		tooltip
-			.html(d.data.name + '<br/>'  + d.data[valueField])
+			.html(`${d.data.name}<hr/>VESTING_SHARES: ${d.data.vesting_shares}<br/>SBD_BALANCE: ${d.data.sbd_balance}<br/>POST COUNT: ${d.data.post_count}<br/>VOTING POWER: ${d.data.voting_power}`)
 			.style('left', (d.x) + 'px')
-			.style('top', (d.y - 30) + 'px')
+			.style('top', (d.y - 30) + 'px');
 	};
 
 	//hide tooltip
@@ -21,16 +21,17 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 			.style('opacity', 0);
 	};
 
+	//clear existing svg
+	d3.select('#d3container').html('');
+
 	//create svg element
-	d3.select('body')
+	d3.select('#d3container')
 		.append('svg')
 		.attr('width', width)
 		.attr('height', height);
 
 	//create tooltip for hover info
-	const tooltip = d3.select('body').append('div')
-		.attr('class', 'tooltip')
-		.style('opacity', 0);
+	const tooltip = d3.select('#tooltip');
 
 	//create pack layout
 	const packLayout = d3.pack()
@@ -52,6 +53,9 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 
 	//turn data into circles
 	svg
+		.append('svg:a')
+		.attr('xlink:href', (d) => `https://www.steemit.com/@${d.data.name}`)
+		.attr('target', '_blank')
 		.append('circle')
 		.attr('cx', (d) => d.x)
 		.attr('cy', (d) => d.y)
@@ -61,12 +65,12 @@ export const generatePackedCircle = (data, valueField, width, height) => {
 
 	//add text label (username)
 	svg
+		.append('svg:a')
+		.attr('xlink:href', (d) => `https://www.steemit.com/@${d.data.name}`)
 		.append('text')
 		.attr('dx', (d) => d.x)
 		.attr('dy', (d) => d.y)
-		.text((d) => {
-		return d.children === undefined ? d.data.name : '';
-		})
+		.text((d) => d.children === undefined ? d.data.name : '')
 		.on('mouseover', showTooltip)
 		.on('mouseout', hideTooltip);
 };

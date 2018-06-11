@@ -1,5 +1,4 @@
 const path = require('path'),
-	webpack = require('webpack'),
 	UglifyJS = require('uglifyjs-webpack-plugin'),
 	HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -50,16 +49,6 @@ module.exports = env => {
 								modules: false
 								//importLoaders: 1,
 								//minimize: true
-							}
-						},
-						{
-							loader: 'postcss-loader',
-							options: {
-								plugins: function () {
-									return [
-										require('postcss-cssnext')
-									];
-								}
 							}
 						}
 					]

@@ -4,32 +4,12 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
 	<title>Steemit Bubbles</title>
-	<style>
-		circle {
-			fill: indianred;
-			opacity: 0.5;
-			stroke: white;
-			cursor: pointer;
-		}
-		text {
-			font-family: "Helvetica Neue", Helvetica, sans-serif;
-			fill: white;
-			font-size: 10px;
-			text-anchor: middle;
-			alignment-baseline: middle;
-			cursor: pointer;
-		}
-		.tooltip {
-			position: absolute;
-			text-align: left;
-			padding: 8px;
-			font: 10px sans-serif;
-			background-color: #ddd;
-			pointer-events: none;
-		}
-	</style>
 </head>
 <body>
+	<input id="username" type="text" />
+	<div id="d3container"></div>
+	<div id="loader"></div>
+	<div id="tooltip"></div>
 	<script async src="main.js"></script>
 	<% if (htmlWebpackPlugin.options.devServer) { %><script src="<%= htmlWebpackPlugin.options.devServer %>/webpack-dev-server.js" type="text/javascript"></script><% } %>
 </body>

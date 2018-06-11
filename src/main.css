@@ -1,0 +1,26 @@
+circle {
+	fill: indianred;
+	opacity: 0.5;
+	stroke: white;
+	cursor: pointer;
+}
+text {
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	fill: white;
+	font-size: 10px;
+	text-anchor: middle;
+	alignment-baseline: middle;
+	cursor: pointer;
+}
+#d3container {
+
+}
+#tooltip {
+	opacity: 0;
+	position: absolute;
+	text-align: left;
+	padding: 8px;
+	font: 10px sans-serif;
+	background-color: #ddd;
+	pointer-events: none;
+}
