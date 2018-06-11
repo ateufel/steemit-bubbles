@@ -1,5 +1,12 @@
 import * as d3 from 'd3';
 
+/**
+ * generate packed circle chart with d3
+ * @param data array of userdata
+ * @param valueField name of the field responsible for different circle sizes
+ * @param width width of the chart
+ * @param height height of the chart
+ */
 export const generatePackedCircle = (data, valueField, width, height) => {
 	//show tooltip with detail info
 	const showTooltip = (d) => {
